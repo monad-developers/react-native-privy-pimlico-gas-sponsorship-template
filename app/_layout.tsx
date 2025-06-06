@@ -12,6 +12,12 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    'SF-Pro-Rounded-Black': require('../assets/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Black.otf'),
+    'SF-Pro-Rounded-Bold': require('../assets/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Bold.otf'),
+    'SF-Pro-Rounded-Heavy': require('../assets/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Heavy.otf'),
+    'SF-Pro-Rounded-Medium': require('../assets/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Medium.otf'),
+    'SF-Pro-Rounded-Regular': require('../assets/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Regular.otf'),
+    'SF-Pro-Rounded-Semibold': require('../assets/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Semibold.otf'),
   });
 
   if (!loaded) {

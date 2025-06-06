@@ -3,6 +3,7 @@ import FullScreenLoader from "@/components/ui/FullScreenLoader";
 import { AuthBoundary } from "@privy-io/expo";
 import { Redirect, Slot } from "expo-router";
 import React from "react";
+import { View } from "react-native";
 
 export default function AppLayout() {
     return (
@@ -11,7 +12,9 @@ export default function AppLayout() {
             error={(error) => <ErrorScreen error={error} />}
             unauthenticated={<Redirect href="/sign-in" />}
         >
-            <Slot />
+            <View style={{ flex: 1, paddingHorizontal: 40, paddingVertical: 20 }}>
+                <Slot />
+            </View>
         </AuthBoundary>
     );
 }

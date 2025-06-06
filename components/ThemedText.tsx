@@ -37,20 +37,23 @@ const styles = StyleSheet.create({
   default: {
     fontSize: 16,
     lineHeight: 24,
+    fontFamily: 'SF-Pro-Rounded-Regular',
   },
   defaultSemiBold: {
     fontSize: 16,
     lineHeight: 24,
     fontWeight: '600',
+    fontFamily: 'SF-Pro-Rounded-Semibold',
   },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
+    fontSize: 24,
     lineHeight: 32,
+    fontFamily: 'SF-Pro-Rounded-Semibold',
   },
   subtitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    color: "#3d3d3d",
+    fontFamily: 'SF-Pro-Rounded-Regular',
   },
   link: {
     lineHeight: 30,
