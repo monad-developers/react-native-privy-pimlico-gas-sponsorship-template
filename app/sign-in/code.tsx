@@ -5,7 +5,7 @@ import { useLoginWithEmail } from "@privy-io/expo";
 import { router } from "expo-router";
 import React from "react";
 import { Button, StyleSheet, View } from "react-native";
-import OTPTextInput from "react-native-otp-textinput";
+import { OtpInput } from "react-native-otp-entry";
 
 export default function CodeScreen() {
   const { email, code, setCode } = useAuth();
@@ -17,16 +17,16 @@ export default function CodeScreen() {
         <ThemedText type="title" style={{ marginBottom: 8 }}>Enter the code</ThemedText>
         <ThemedText style={{ textAlign: 'center' }} type="subtitle">A code was sent to {email}</ThemedText>
       </View>
-      <OTPTextInput
-        inputCount={6}
+      <OtpInput
+        numberOfDigits={6}
         autoFocus={true}
-        handleTextChange={setCode}
-        tintColor="#f0f0f0"
-        offTintColor="#f0f0f0"
-        containerStyle={{ marginVertical: 20 }}
-        textInputStyle={{
-          borderRadius: 8,
-          backgroundColor: '#f0f0f0',
+        type="numeric"
+        onTextChange={setCode}
+        theme={{
+          containerStyle: styles.otpContainer,
+          pinCodeContainerStyle: styles.pinCodeContainer,
+          focusStickStyle: styles.focusStick,
+          focusedPinCodeContainerStyle: styles.activePinCodeContainer,
         }}
       />
       <ThemedButton
@@ -52,4 +52,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 16,
   },
+  otpContainer: {
+    marginVertical: 20,
+  },
+  pinCodeContainer: {
+    backgroundColor: "#f0f0f0"
+  },
+  focusStick: {
+    backgroundColor: "#7C3AED"
+  },
+  activePinCodeContainer: {
+    borderColor: "#7C3AED"
+  }
 }); 
