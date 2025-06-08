@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     height: 32,
     minWidth: 80,
-    maxWidth: 180,
   },
   text: {
     color: "#000",

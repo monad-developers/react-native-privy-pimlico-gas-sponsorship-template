@@ -12,12 +12,14 @@
   },
   "dependencies": {
     "@ethersproject/shims": "^5.8.0",
+    "@expo-google-fonts/inter": "^0.4.1",
     "@expo/vector-icons": "^14.1.0",
     "@gorhom/bottom-sheet": "^5.1.6",
     "@privy-io/expo": "^0.53.8",
     "@privy-io/expo-native-extensions": "^0.0.5",
     "@privy-io/react-auth": "^2.14.0",
     "@privy-io/wagmi": "^1.0.3",
+    "@react-native-async-storage/async-storage": "2.1.2",
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/elements": "^2.3.8",
     "@react-navigation/native": "^7.1.6",
@@ -52,11 +54,10 @@
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
+    "react-native-svg": "15.11.2",
     "react-native-web": "~0.20.0",
     "react-native-webview": "13.13.5",
-    "wagmi": "^2.15.6",
-    "react-native-svg": "15.11.2",
-    "@react-native-async-storage/async-storage": "2.1.2"
+    "wagmi": "^2.15.6"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

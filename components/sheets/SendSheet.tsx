@@ -1,13 +1,36 @@
+import { useWalletContext } from "@/context/WalletContext";
 import { BottomSheetView } from "@gorhom/bottom-sheet";
 import * as Clipboard from "expo-clipboard";
-import React, { useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Linking, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { formatUnits, parseUnits } from "viem/utils";
 import FloatingIconButton from "../ui/FloatingIconButton";
 import ThemedButton from "../ui/ThemedButton";
 
 export default function SendSheet() {
     const [amount, setAmount] = useState("");
     const [address, setAddress] = useState("");
+    const [usdcBalance, setUsdcBalance] = useState<bigint | undefined>(undefined);
+    const { getUSDCBalance, sendUSDC } = useWalletContext();
+    const [loading, setLoading] = useState(false);
+    const [txHash, setTxHash] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchBalance = async () => {
+            const bal = await getUSDCBalance();
+            setUsdcBalance(bal);
+        };
+        fetchBalance();
+    }, [getUSDCBalance]);
+
+    let isOverBalance = false;
+    let parsedAmount: bigint = 0n;
+    if (amount && usdcBalance !== undefined) {
+        try {
+            parsedAmount = parseUnits(amount, 6);
+            isOverBalance = parsedAmount > usdcBalance;
+        } catch {}
+    }
 
     const handleChange = (val: string) => {
         // Allow only digits and a single dot
@@ -30,7 +53,7 @@ export default function SendSheet() {
                         <View style={styles.inputRow}>
                             <Text style={styles.dollarSign}>$</Text>
                             <TextInput
-                                style={styles.input}
+                                style={[styles.input, isOverBalance && { color: 'red' }]}
                                 value={amount}
                                 onChangeText={handleChange}
                                 placeholder="0.00"
@@ -41,6 +64,9 @@ export default function SendSheet() {
                             />
                         </View>
                     </View>
+                    <Text style={{ color: '#888', fontSize: 14, marginTop: 8, alignSelf: 'center', fontFamily: 'SF-Pro-Rounded-Regular' }}>
+                        Balance: {usdcBalance !== undefined ? Number(formatUnits(usdcBalance, 6)).toFixed(2) : '...'} USDC
+                    </Text>
                     <View style={styles.addressInputWrapper}>
                         <Text style={styles.label}>Receiver</Text>
                         <View style={styles.addressFloatContainer}>
@@ -72,13 +98,37 @@ export default function SendSheet() {
                             )}
                         </View>
                     </View>
+                    {txHash && (
+                        <TouchableOpacity
+                            onPress={() => Linking.openURL(`https://testnet.monadexplorer.com/tx/${txHash}`)}
+                            style={{ marginTop: 16 }}
+                        >
+                            <Text style={{ color: '#4f46e5', fontSize: 16, textAlign: 'center', textDecorationLine: 'underline' }}>
+                                View on Monad Explorer
+                            </Text>
+                        </TouchableOpacity>
+                    )}
                 </View>
                 <View style={styles.bottomButtonWrapper}>
                     <ThemedButton
-                        title="Send"
-                        onPress={() => {/* handle send */}}
-                        disabled={!(amount && address)}
+                        title={loading ? "Sending..." : "Send"}
+                        onPress={async () => {
+                            setLoading(true);
+                            setTxHash(null);
+                            try {
+                                const tx = await sendUSDC(address as `0x${string}`, parsedAmount);
+                                // tx may be a hash or an object with hash property
+                                const hash = typeof tx === 'string' ? tx : tx?.hash;
+                                setTxHash(hash || null);
+                            } catch (e) {
+                                setTxHash(null);
+                            } finally {
+                                setLoading(false);
+                            }
+                        }}
+                        disabled={!(amount && address) || isOverBalance || loading}
                     />
+                    
                 </View>
             </View>
         </BottomSheetView>

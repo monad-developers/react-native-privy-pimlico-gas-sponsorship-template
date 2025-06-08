@@ -20,6 +20,16 @@ const ERC20_ABI = [
         "name": "balanceOf",
         "outputs": [{ "name": "", "type": "uint256" }],
         "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "to", "type": "address" },
+            { "internalType": "uint256", "name": "amount", "type": "uint256" }
+        ],
+        "name": "transfer",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
     }
 ];
 
@@ -67,14 +77,22 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
     async function sendUSDC(to: `0x${string}`, amount: bigint) {
         if (walletClient && wallet) {
-            const usdcAddress = "0x0000000000000000000000000000000000000000";
-            const tx = await walletClient.sendTransaction({
-                account: wallet.address as `0x${string}`,
-                to: to,
-                value: 0n,
-                data: "0x",
-                chain: monadTestnet,
+            console.log("sending USDC", to, amount);
+            const provider = await wallet.getProvider();
+            const tx = await provider.request({
+                method: "eth_sendTransaction",
+                params: [
+                    {
+                        from: wallet.address as `0x${string}`,
+                        to: USDC_ADDRESS,
+                        value: 0n,
+                        functionName: "transfer",
+                        data: "0xa9059cbb" + to.slice(2).padStart(64, "0") + amount.toString(16).padStart(64, "0"),
+                        chain: monadTestnet,
+                    }
+                ]
             });
+            console.log("tx", tx);
             return tx;
         }
     }

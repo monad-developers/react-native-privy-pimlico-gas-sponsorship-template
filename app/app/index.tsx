@@ -1,5 +1,6 @@
 import ReceiveSheet from "@/components/sheets/ReceiveSheet";
 import SendSheet from "@/components/sheets/SendSheet";
+import SignSheet from "@/components/sheets/SignSheet";
 import Avatar from "@/components/ui/Avatar";
 import IconButton from "@/components/ui/IconButton";
 import { useWalletContext } from "@/context/WalletContext";
@@ -30,9 +31,9 @@ export default function HomeScreen() {
     // Bottom sheet ref and snap points
     const bottomSheetRef = useRef<BottomSheet>(null);
     const snapPoints = ["90%"];
-    const [sheetType, setSheetType] = useState<"send" | "receive" | null>(null);
+    const [sheetType, setSheetType] = useState<"send" | "receive" | "sign" | null>(null);
 
-    const openSheet = useCallback((type: "send" | "receive") => {
+    const openSheet = useCallback((type: "send" | "receive" | "sign") => {
         setSheetType(type);
         bottomSheetRef.current?.expand();
     }, []);
@@ -99,15 +100,15 @@ export default function HomeScreen() {
                 <IconButton
                     icon="signature"
                     label="Sign Message"
-                    onPress={() => {}}
+                    onPress={() => openSheet("sign")}
                 />
-                <IconButton
+                {/* <IconButton
                     icon="square.and.arrow.up.trianglebadge.exclamationmark"
                     label="Export Wallet"
                     onPress={() => {}}
-                />
+                /> */}
                 <IconButton
-                    icon="square.and.arrow.up.trianglebadge.exclamationmark"
+                    icon="rectangle.portrait.and.arrow.forward"
                     label="Sign Out"
                     onPress={logout}
                 />
@@ -125,6 +126,7 @@ export default function HomeScreen() {
             >
                 {sheetType === "send" && <SendSheet />}
                 {sheetType === "receive" && <ReceiveSheet />}
+                {sheetType === "sign" && <SignSheet />}
             </BottomSheet>
         </View>
     );

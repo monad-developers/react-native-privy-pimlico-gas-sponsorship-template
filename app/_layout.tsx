@@ -1,4 +1,5 @@
 import { PrivyProvider } from "@privy-io/expo";
+import { PrivyElements } from "@privy-io/expo/ui";
 import {
     DarkTheme,
     DefaultTheme,
@@ -8,6 +9,11 @@ import { useFonts } from "expo-font";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
+import {
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+} from "@expo-google-fonts/inter";
 import { Slot } from "expo-router";
 import { Text, View } from "react-native";
 import { monadTestnet } from "viem/chains";
@@ -22,6 +28,9 @@ export default function RootLayout() {
         "SF-Pro-Rounded-Medium": require("../assets/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Medium.otf"),
         "SF-Pro-Rounded-Regular": require("../assets/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Regular.otf"),
         "SF-Pro-Rounded-Semibold": require("../assets/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Semibold.otf"),
+        Inter_400Regular,
+        Inter_500Medium,
+        Inter_600SemiBold,
     });
 
     if (!loaded) {
@@ -48,6 +57,7 @@ export default function RootLayout() {
                     }}
                 >
                     <Slot />
+                    <PrivyElements />
                 </PrivyProvider>
             ) : (
                 <View
