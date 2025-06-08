@@ -1,5 +1,6 @@
 import ErrorScreen from "@/components/ui/ErrorScreen";
 import FullScreenLoader from "@/components/ui/FullScreenLoader";
+import { WalletProvider } from "@/context/WalletContext";
 import { AuthBoundary } from "@privy-io/expo";
 import { Redirect, Slot } from "expo-router";
 import React from "react";
@@ -14,9 +15,11 @@ export default function AppLayout() {
             error={(error) => <ErrorScreen error={error} />}
             unauthenticated={<Redirect href="/sign-in" />}
         >
-            <View style={{ flex: 1}}>
+            <WalletProvider>
+            <View style={{ flex: 1 }}>
                 <Slot />
             </View>
+            </WalletProvider>
         </AuthBoundary>
         </GestureHandlerRootView>
     );

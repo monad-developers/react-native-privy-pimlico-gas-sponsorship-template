@@ -2,19 +2,31 @@ import ReceiveSheet from "@/components/sheets/ReceiveSheet";
 import SendSheet from "@/components/sheets/SendSheet";
 import Avatar from "@/components/ui/Avatar";
 import IconButton from "@/components/ui/IconButton";
+import { useWalletContext } from "@/context/WalletContext";
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { usePrivy } from "@privy-io/expo";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Text, View } from "react-native";
+import { formatUnits } from "viem/utils";
 
 export default function HomeScreen() {
     const { logout, user } = usePrivy();
+    const { getUSDCBalance } = useWalletContext();
+    const [balance, setBalance] = useState<bigint | undefined>(undefined);
+
+    useEffect(() => {
+        const getBalance = async () => {
+            const balance = await getUSDCBalance();
+            setBalance(balance);
+        };
+        getBalance();
+    }, [getUSDCBalance]);
 
     const { linked_accounts } = user as any;
     const email = linked_accounts?.find(
         (account: any) => account.type === "email"
     )?.email;
-    
+
     // Bottom sheet ref and snap points
     const bottomSheetRef = useRef<BottomSheet>(null);
     const snapPoints = ["90%"];
@@ -44,15 +56,25 @@ export default function HomeScreen() {
                 size={96}
                 style={{ marginBottom: 24 }}
             />
-            <Text
+            <View
                 style={{
-                    fontSize: 40,
-                    fontWeight: "bold",
-                    fontFamily: "SF-Pro-Rounded-Semibold",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 10,
                 }}
             >
-                $1,000.00
-            </Text>
+                <Text style={{ fontSize: 24, color: "#777" }}>$</Text>
+                <Text
+                    style={{
+                        fontSize: 40,
+                        fontWeight: "bold",
+                        fontFamily: "SF-Pro-Rounded-Semibold",
+                    }}
+                >
+                    {balance ? Number(formatUnits(balance, 6)).toFixed(2) : "0.00"}
+                </Text>
+            </View>
             <View
                 style={{
                     flexDirection: "column",
@@ -64,10 +86,31 @@ export default function HomeScreen() {
                     gap: 10,
                 }}
             >
-                <IconButton icon="paperplane.fill" label="Send USDC" onPress={() => openSheet("send")} />
-                <IconButton icon="qrcode" label="Receive" onPress={() => openSheet("receive")} />
-                <IconButton icon="signature" label="Sign Message" onPress={() => {}} />
-                <IconButton icon="square.and.arrow.up.trianglebadge.exclamationmark" label="Export Wallet" onPress={() => {}} /><IconButton icon="square.and.arrow.up.trianglebadge.exclamationmark" label="Sign Out" onPress={logout} />
+                <IconButton
+                    icon="paperplane.fill"
+                    label="Send USDC"
+                    onPress={() => openSheet("send")}
+                />
+                <IconButton
+                    icon="qrcode"
+                    label="Receive"
+                    onPress={() => openSheet("receive")}
+                />
+                <IconButton
+                    icon="signature"
+                    label="Sign Message"
+                    onPress={() => {}}
+                />
+                <IconButton
+                    icon="square.and.arrow.up.trianglebadge.exclamationmark"
+                    label="Export Wallet"
+                    onPress={() => {}}
+                />
+                <IconButton
+                    icon="square.and.arrow.up.trianglebadge.exclamationmark"
+                    label="Sign Out"
+                    onPress={logout}
+                />
             </View>
             <View style={{ height: 24 }} />
             <BottomSheet
