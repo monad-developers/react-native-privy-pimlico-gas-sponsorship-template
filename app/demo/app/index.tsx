@@ -10,6 +10,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Text, View } from "react-native";
 import { formatUnits } from "viem/utils";
 
+
 export default function HomeScreen() {
     const { logout, user } = usePrivy();
     const { getUSDCBalance } = useWalletContext();
@@ -102,11 +103,6 @@ export default function HomeScreen() {
                     label="Sign Message"
                     onPress={() => openSheet("sign")}
                 />
-                {/* <IconButton
-                    icon="square.and.arrow.up.trianglebadge.exclamationmark"
-                    label="Export Wallet"
-                    onPress={() => {}}
-                /> */}
                 <IconButton
                     icon="rectangle.portrait.and.arrow.forward"
                     label="Sign Out"

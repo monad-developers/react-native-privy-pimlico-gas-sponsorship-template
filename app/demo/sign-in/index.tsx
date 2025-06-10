@@ -28,7 +28,7 @@ export default function EmailScreen() {
         title="Send Code"
         onPress={async () => {
           await sendCode({ email });
-          router.push("/sign-in/code");
+          router.push("/demo/sign-in/code");
         }}
         disabled={!email}
       />

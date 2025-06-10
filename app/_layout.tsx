@@ -1,5 +1,3 @@
-import { PrivyProvider } from "@privy-io/expo";
-import { PrivyElements } from "@privy-io/expo/ui";
 import {
     DarkTheme,
     DefaultTheme,
@@ -15,13 +13,11 @@ import {
     Inter_600SemiBold,
 } from "@expo-google-fonts/inter";
 import { Slot } from "expo-router";
-import { Text, View } from "react-native";
-import { monadTestnet } from "viem/chains";
+
 
 export default function RootLayout() {
     const colorScheme = useColorScheme();
     const [loaded] = useFonts({
-        SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
         "SF-Pro-Rounded-Black": require("../assets/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Black.otf"),
         "SF-Pro-Rounded-Bold": require("../assets/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Bold.otf"),
         "SF-Pro-Rounded-Heavy": require("../assets/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Heavy.otf"),
@@ -42,34 +38,7 @@ export default function RootLayout() {
         <ThemeProvider
             value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
-            {process.env.EXPO_PUBLIC_PRIVY_APP_ID &&
-            process.env.EXPO_PUBLIC_PRIVY_CLIENT_ID ? (
-                <PrivyProvider
-                    clientId={process.env.EXPO_PUBLIC_PRIVY_CLIENT_ID}
-                    appId={process.env.EXPO_PUBLIC_PRIVY_APP_ID}
-                    supportedChains={[monadTestnet]}
-                    config={{
-                        embedded: {
-                            ethereum: {
-                                createOnLogin: "users-without-wallets",
-                            },
-                        },
-                    }}
-                >
-                    <Slot />
-                    <PrivyElements />
-                </PrivyProvider>
-            ) : (
-                <View
-                    style={{
-                        flex: 1,
-                        alignItems: "center",
-                        justifyContent: "center",
-                    }}
-                >
-                    <Text>PRIVY_APP_ID is not set</Text>
-                </View>
-            )}
+            <Slot />
         </ThemeProvider>
     );
 }

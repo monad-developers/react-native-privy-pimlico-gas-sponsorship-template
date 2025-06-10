@@ -33,7 +33,7 @@ export default function CodeScreen() {
         title="Login"
         onPress={async () => {
           await loginWithCode({ code, email });
-          router.push("/app");
+          router.push("/demo/app");
         }}
         disabled={code.length !== 6}
       />
