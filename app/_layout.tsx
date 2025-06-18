@@ -1,22 +1,22 @@
-import {
-    DarkTheme,
-    DefaultTheme,
-    ThemeProvider,
-} from "@react-navigation/native";
-import { useFonts } from "expo-font";
-import "react-native-reanimated";
-
 import { useColorScheme } from "@/hooks/useColorScheme";
 import {
     Inter_400Regular,
     Inter_500Medium,
     Inter_600SemiBold,
 } from "@expo-google-fonts/inter";
+import {
+    DarkTheme,
+    DefaultTheme,
+    ThemeProvider,
+} from "@react-navigation/native";
+import { useFonts } from "expo-font";
 import { Slot } from "expo-router";
+import "react-native-reanimated";
 
 
 export default function RootLayout() {
     const colorScheme = useColorScheme();
+    
     const [loaded] = useFonts({
         "SF-Pro-Rounded-Black": require("../assets/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Black.otf"),
         "SF-Pro-Rounded-Bold": require("../assets/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Bold.otf"),
