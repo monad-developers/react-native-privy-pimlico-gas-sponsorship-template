@@ -5,21 +5,21 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/monad-icon.png",
-    
     "scheme": "rnwalletapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.anonymous.rn-wallet-app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/monad-icon.png",
         "resizeMode": "contain",
-        "imageSize": 60,
+        "imageSize": 50,
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.anonymous.rnwalletapp"
     },
     "web": {
       "bundler": "metro",
@@ -37,11 +37,28 @@
           "backgroundColor": "#ffffff"
         }
       ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "17.5"
+          },
+          "android": {
+            "compileSdkVersion": 35
+          }
+        }
+      ],
       "expo-secure-store",
       "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "677c3b3b-e9db-46e7-9d89-fac88aae2b40"
+      }
     }
   }
 }
