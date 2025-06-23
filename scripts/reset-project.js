@@ -33,11 +33,76 @@ export default function Index() {
 }
 `;
 
-const layoutContent = `import { Stack } from "expo-router";
+const layoutContent = `import { PrivyProvider } from "@privy-io/expo";
+import { Slot } from "expo-router";
+import { StyleSheet, Text, useColorScheme, View } from "react-native";
+import { monadTestnet } from "viem/chains";
+import {
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+} from "@expo-google-fonts/inter";
+import {
+    DarkTheme,
+    DefaultTheme,
+    ThemeProvider,
+} from "@react-navigation/native";
+import { useFonts } from "expo-font";
+import "react-native-reanimated";
+
 
 export default function RootLayout() {
-  return <Stack />;
+    const colorScheme = useColorScheme();
+    
+    const [loaded] = useFonts({
+      Inter_400Regular,
+      Inter_500Medium,
+      Inter_600SemiBold,
+    });
+
+    if (!loaded) {
+        // Async font loading only occurs in development.
+        return null;
+    }
+
+    return (
+        <ThemeProvider
+            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        >
+          {
+            process.env.EXPO_PUBLIC_PRIVY_APP_ID &&
+            process.env.EXPO_PUBLIC_PRIVY_CLIENT_ID ? (
+               <PrivyProvider
+                clientId={process.env.EXPO_PUBLIC_PRIVY_CLIENT_ID as string}
+                appId={process.env.EXPO_PUBLIC_PRIVY_APP_ID as string}
+                supportedChains={[monadTestnet]}
+                config={{
+                    embedded: {
+                        ethereum: {
+                            createOnLogin: "users-without-wallets",
+                        },
+                    },
+                }}
+            >
+                <Slot />
+            </PrivyProvider>
+          ) : (
+            <View style={styles.container}>
+                <Text>PRIVY_APP_ID is not set</Text>
+            </View>
+          )}
+           
+        </ThemeProvider>
+    );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+});
 `;
 
 const rl = readline.createInterface({
