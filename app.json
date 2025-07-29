@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "rn-wallet-app",
-    "slug": "rn-wallet-app",
+    "name": "rn-gas-sponsorship-app",
+    "slug": "rn-gas-sponsorship-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -12,7 +12,7 @@
     "scheme": "rnwalletapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "githubUrl": "https://github.com/monad-developers/react-native-privy-embedded-wallet-template",
+    "githubUrl": "https://github.com/monad-developers/react-native-privy-pimlico-gas-sponsorship-template",
     "ios": {
       "bundleIdentifier": "com.anonymous.rn-wallet-app",
       "icon": "./assets/images/icon.png",
