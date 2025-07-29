@@ -8,7 +8,7 @@ export default function DemoLayout() {
   const hasClientId = !!process.env.EXPO_PUBLIC_PRIVY_CLIENT_ID;
   const hasBundlerUrl = !!process.env.EXPO_PUBLIC_PIMLICO_BUNDLER_URL;
   const hasEnvVars = hasAppId && hasClientId && hasBundlerUrl;
-  
+
   if (!hasEnvVars) {
     return (
       <SafeAreaView style={styles.safeArea}>
@@ -30,33 +30,21 @@ export default function DemoLayout() {
     );
   }
 
-  if (
-    process.env.EXPO_PUBLIC_PRIVY_APP_ID &&
-    process.env.EXPO_PUBLIC_PRIVY_CLIENT_ID
-  ) {
-    return (
-      <PrivyProvider
-        clientId={process.env.EXPO_PUBLIC_PRIVY_CLIENT_ID as string}
-        appId={process.env.EXPO_PUBLIC_PRIVY_APP_ID as string}
-        supportedChains={[monadTestnet]}
-        config={{
-          embedded: {
-            ethereum: {
-              createOnLogin: "users-without-wallets",
-            },
-          },
-        }}
-      >
-        <Slot />
-      </PrivyProvider>
-    );
-  }
-
   return (
-    <View style={styles.container}>
-      <Text>EXPO_PUBLIC_PRIVY_APP_ID is not set in .env file</Text>
-      <Text>EXPO_PUBLIC_PRIVY_CLIENT_ID is not set in .env file</Text>
-    </View>
+    <PrivyProvider
+      clientId={process.env.EXPO_PUBLIC_PRIVY_CLIENT_ID as string}
+      appId={process.env.EXPO_PUBLIC_PRIVY_APP_ID as string}
+      supportedChains={[monadTestnet]}
+      config={{
+        embedded: {
+          ethereum: {
+            createOnLogin: "users-without-wallets",
+          },
+        },
+      }}
+    >
+      <Slot />
+    </PrivyProvider>
   );
 }
 
