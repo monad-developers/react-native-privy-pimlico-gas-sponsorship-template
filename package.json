@@ -44,6 +44,7 @@
     "expo-system-ui": "~5.0.8",
     "expo-web-browser": "~14.1.6",
     "fast-text-encoding": "^1.0.6",
+    "permissionless": "^0.2.52",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.3",
@@ -58,7 +59,8 @@
     "react-native-svg": "15.11.2",
     "react-native-web": "~0.20.0",
     "react-native-webview": "13.13.5",
-    "wagmi": "^2.15.6"
+    "viem": "^2.33.1",
+    "wagmi": "^2.16.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
