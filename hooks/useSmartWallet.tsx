@@ -1,10 +1,9 @@
-import React from "react";
-import { ConnectedWallet, usePrivy, useWallets } from "@privy-io/react-auth";
+import { ConnectedEthereumWallet, useEmbeddedEthereumWallet, usePrivy } from "@privy-io/expo";
 import type { SmartAccountClient } from "permissionless";
 import { createSmartAccountClient } from "permissionless";
 import { toKernelSmartAccount } from "permissionless/accounts";
 import { createPimlicoClient } from "permissionless/clients/pimlico";
-import { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { createPublicClient, createWalletClient, custom, http } from "viem";
 import { entryPoint07Address } from "viem/account-abstraction";
 import { monadTestnet } from "viem/chains";
@@ -30,8 +29,8 @@ export default function SmartWalletProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { ready } = usePrivy();
-  const { wallets } = useWallets();
+  const { user, isReady } = usePrivy();
+  const { wallets } = useEmbeddedEthereumWallet();
   const [smartAccountAddress, setSmartAccountAddress] = useState<
     `0x${string}` | null
   >(null);
@@ -39,17 +38,15 @@ export default function SmartWalletProvider({
   const [smartAccountClient, setSmartAccountClient] =
     useState<SmartAccountClient | null>(null);
 
-  const embeddedWallet = wallets.find(
-    (wallet) => wallet.walletClientType === "privy"
-  );
+  const embeddedWallet = wallets.find((wallet) => wallet.walletIndex === 0);
 
   useEffect(() => {
-    if (!ready) return;
-  }, [ready, embeddedWallet]);
+    if (!isReady) return;
+  }, [isReady, embeddedWallet]);
 
   useEffect(() => {
-    async function initializeSmartAccount(embeddedWallet: ConnectedWallet) {
-      const provider = await embeddedWallet.getEthereumProvider();
+    async function initializeSmartAccount(embeddedWallet: ConnectedEthereumWallet) {
+      const provider = await embeddedWallet.getProvider();
 
       const embeddedWalletClient = createWalletClient({
         account: embeddedWallet.address as `0x${string}`,
@@ -73,7 +70,7 @@ export default function SmartWalletProvider({
       });
 
       const pimlicoClient = createPimlicoClient({
-        transport: http(process.env.NEXT_PUBLIC_PIMLICO_BUNDLER_URL),
+        transport: http(process.env.EXPO_PUBLIC_PIMLICO_BUNDLER_URL),
         entryPoint: {
           address: entryPoint07Address,
           version: "0.7",
@@ -83,7 +80,7 @@ export default function SmartWalletProvider({
       const smartAccountClient = createSmartAccountClient({
         account: kernelAccount,
         chain: monadTestnet,
-        bundlerTransport: http(process.env.NEXT_PUBLIC_PIMLICO_BUNDLER_URL),
+        bundlerTransport: http(process.env.EXPO_PUBLIC_PIMLICO_BUNDLER_URL),
         paymaster: pimlicoClient, // optional
         userOperation: {
           estimateFeesPerGas: async () => {

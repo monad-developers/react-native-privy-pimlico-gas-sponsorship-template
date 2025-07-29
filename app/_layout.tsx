@@ -1,3 +1,4 @@
+import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold, useFonts } from "@expo-google-fonts/inter";
 import { PrivyProvider } from "@privy-io/expo";
 import { Slot } from "expo-router";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
@@ -8,7 +9,9 @@ export default function DemoLayout() {
   const hasClientId = !!process.env.EXPO_PUBLIC_PRIVY_CLIENT_ID;
   const hasBundlerUrl = !!process.env.EXPO_PUBLIC_PIMLICO_BUNDLER_URL;
   const hasEnvVars = hasAppId && hasClientId && hasBundlerUrl;
-  
+
+  console.log(process.env.EXPO_PUBLIC_PRIVY_APP_ID);
+
   if (!hasEnvVars) {
     return (
       <SafeAreaView style={styles.safeArea}>
@@ -30,33 +33,38 @@ export default function DemoLayout() {
     );
   }
 
-  if (
-    process.env.EXPO_PUBLIC_PRIVY_APP_ID &&
-    process.env.EXPO_PUBLIC_PRIVY_CLIENT_ID
-  ) {
-    return (
-      <PrivyProvider
-        clientId={process.env.EXPO_PUBLIC_PRIVY_CLIENT_ID as string}
-        appId={process.env.EXPO_PUBLIC_PRIVY_APP_ID as string}
-        supportedChains={[monadTestnet]}
-        config={{
-          embedded: {
-            ethereum: {
-              createOnLogin: "users-without-wallets",
-            },
-          },
-        }}
-      >
-        <Slot />
-      </PrivyProvider>
-    );
+  const [loaded] = useFonts({
+    "SF-Pro-Rounded-Black": require("../assets/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Black.otf"),
+    "SF-Pro-Rounded-Bold": require("../assets/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Bold.otf"),
+    "SF-Pro-Rounded-Heavy": require("../assets/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Heavy.otf"),
+    "SF-Pro-Rounded-Medium": require("../assets/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Medium.otf"),
+    "SF-Pro-Rounded-Regular": require("../assets/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Regular.otf"),
+    "SF-Pro-Rounded-Semibold": require("../assets/fonts/SF_Pro_Rounded/SF-Pro-Rounded-Semibold.otf"),
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+  });
+
+
+  if (!loaded) {
+    return null;
   }
 
   return (
-    <View style={styles.container}>
-      <Text>EXPO_PUBLIC_PRIVY_APP_ID is not set in .env file</Text>
-      <Text>EXPO_PUBLIC_PRIVY_CLIENT_ID is not set in .env file</Text>
-    </View>
+    <PrivyProvider
+      clientId={process.env.EXPO_PUBLIC_PRIVY_CLIENT_ID as string}
+      appId={process.env.EXPO_PUBLIC_PRIVY_APP_ID as string}
+      supportedChains={[monadTestnet]}
+      config={{
+        embedded: {
+          ethereum: {
+            createOnLogin: "users-without-wallets",
+          },
+        },
+      }}
+    >
+     <Slot />
+    </PrivyProvider>
   );
 }
 
