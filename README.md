@@ -1,6 +1,6 @@
-# React Native Privy Embedded Wallet Template
+# React Native Sponsored Transaction Template
 
-This is a wallet template which uses Expo, React Native, Monad and Privy Embedded Wallet.
+This is a wallet template which uses Expo, React Native, Monad, Privy Embedded Wallet and Pimlico Paymaster.
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
@@ -13,6 +13,7 @@ You can start developing by editing the files inside the **app** directory. This
 - NPM
 - Expo CLI (Install using the following command: `npm i -g expo-cli`)
 - Privy Account
+- Pimlico Account
 
 For Android:
 - [Android Studio](https://developer.android.com/studio) (API version 35 and above)
@@ -82,6 +83,7 @@ cp .env.example .env
 ```
 EXPO_PUBLIC_PRIVY_APP_ID=
 EXPO_PUBLIC_PRIVY_CLIENT_ID=
+EXPO_PUBLIC_PIMLICO_BUNDLER_URL=
 ```
 
 #### `EXPO_PUBLIC_PRIVY_APP_ID`
@@ -113,6 +115,24 @@ You can find the app bundle name in `app.json` for Android it is `package` prope
 4. You can copy the `Client ID` and use as the value for `EXPO_PUBLIC_PRIVY_CLIENT_ID`.
 
 ![client_id](/assets/readme/client_id.png)
+
+#### `EXPO_PUBLIC_PIMLICO_BUNDLER_URL`
+
+1. Sign up on Pimlico and go to "API Keys"
+
+![pimlico_dashboard](/assets/readme/pimlico_dashboard.png)
+
+2. Create a new API key
+
+![create_api_key](/assets/readme/create_api_key.png)
+
+3. Click on "RPC URLs"
+
+![rpc_urls](/assets/readme/rpc_urls.png)
+
+4. Search for Monad Testnet and copy the URL, this is the value for `EXPO_PUBLIC_PIMLICO_BUNDLER_URL` environment variable
+
+![monad_testnet_rpc_url](/assets/readme/monad_testnet_rpc_url.png)
 
 ### Start the app
 
@@ -147,21 +167,26 @@ npx expo run:android
 ## Folder structure of the template
 
 ```
-react-native-privy-embedded-wallet-template/
+react-native-privy-pimlico-gas-sponsorship-template/
   ├── app/                                   # Expo router entrypoint
   │   ├── _layout.tsx                        # Root Layout
   │   └── index.tsx                          # First screen
   ├── assets/
-  │   ├── fonts/                             # Custom fonts go here
-  │   └── images/ 
-  │       ├── adaptive-icon.png
-  │       ├── favicon.png
-  │       ├── icon.png
-  │       ├── monad-logo-inverted.png
-  │       └── monad-logo.png
-  │   └── readme/                            # images for the readme, you can delete this
+  │   ├── images/ 
+  │   │   ├── adaptive-icon.png
+  │   │   ├── favicon.png
+  │   │   ├── icon.png
+  │   │   ├── monad-logo-inverted.png
+  │   │   └── monad-logo.png
+  │   └── readme/                            
   ├── constants/
   │   └── Colors.ts
+  ├── hooks/
+  │   └── useSmartWallet.tsx                 # Smart Wallet utilities
+  ├── screen/
+  │   └── HomeScreen.tsx                     # Start here
+  ├── types/
+  │   └── react-native-qrcode-styled.d.ts
   ├── app.json                               # App properties
   ├── babel.config.js
   ├── eas.json
@@ -171,10 +196,51 @@ react-native-privy-embedded-wallet-template/
   ├── package-lock.json
   ├── package.json
   ├── README.md
-  ├── tsconfig.json
-  ├── types/
-  │   └── react-native-qrcode-styled.d.ts
+  └── tsconfig.json
 ```
+
+## Sending sponsored transactions
+
+Feel free to edit the code to send transactions of choice or copy the code it into your project.
+
+```ts
+...
+
+// Use `useSmartWallets` hook
+const { smartAccountAddress, smartAccountClient, smartAccountReady } = useSmartWallet();
+
+...
+
+// Send sponsored transaction
+const txHash = await smartAccountClient?.sendTransaction({
+  account: smartAccountClient?.account,
+  chain: monadTestnet,
+  to: NFT_CONTRACT_ADDRESS,
+  data,
+});
+
+...
+```
+
+### Sending multiple sponsored transactions at once
+
+```ts
+const txHash = await smartAccountClient?.sendTransaction({
+  calls: [
+    {
+      to: NFT_CONTRACT_ADDRESS,
+      data,
+    },
+    {
+      to: NFT_CONTRACT_ADDRESS,
+      data,
+    },
+  ],
+});
+```
+
+This example uses Kernel smart account with Entrypoint v7, feel free to deep dive into the [code](https://github.com/monad-developers/privy-gas-sponsorship-example/blob/main/src/hooks/useSmartWallet.tsx)
+
 
 ## Modifying the app name
 
@@ -262,7 +328,7 @@ Edit the `splash` object in `app.json` to modify the splash screen.
 ```json
 {
    "expo": {
-      "name": "rn-wallet-app",
+      "name": "rn-gas-sponsorship-app",
       ...
       "splash": { <--- Edit this object
          "image": "./assets/images/icon.png",
@@ -294,30 +360,7 @@ This is a build-time configuration, it has no effect in Expo Go.
 
 ## Editing the landing screen
 
-<table width="100%">
-  <tr>
-    <th width="50%">iOS</th>
-    <th width="50%">Android</th>
-  </tr>
-  <tr>
-    <td align="center">
-      <img src="/assets/readme/landing_screen_ios.png" width="300"/>
-    </td>
-    <td align="center">
-      <img src="/assets/readme/landing_screen_android.png" width="300"/>
-    </td>
-  </tr>
-</table>
-
-You can edit the landing page by editing the code in the file `app/index.tsx`.
-
-## Wallet Actions
-
-The template has example code for the following Wallet Actions:
-
-- [Send USDC](https://github.com/monad-developers/react-native-privy-embedded-wallet-template/blob/main/components/sheets/SendSheet.tsx) 
-- [Sign Message](https://github.com/monad-developers/react-native-privy-embedded-wallet-template/blob/main/components/sheets/SignSheet.tsx)
-
+You can edit the landing page by editing the code in the file `screens/HomeScreen.tsx`.
 
 ## Modifying the package/bundle identifier
 
@@ -329,7 +372,7 @@ When publishing app to the app store you need to have a unique package/bundle id
 ```json
 {
   "expo": {
-    "name": "rn-wallet-app",
+    "name": "rn-gas-sponsorship-app",
     ...
     "ios": {
       "bundleIdentifier": "com.anonymous.rn-wallet-app", <--- Edit this
@@ -357,14 +400,8 @@ git checkout demo
 react-native-privy-embedded-wallet-template/
   ├── app/
   │   ├── _layout.tsx                        # Root layout of the project
-  │   ├── +not-found.tsx
-  │   ├── demo/                              # This is entrypoint for the Wallet related code.
-  │   │   ├── _layout.tsx
-  │   │   ├── app/                           # If Authenticated the user can access route /app
-  │   │   │   ├── _layout.tsx
-  │   │   │   └── index.tsx
-  │   │   └── sign-in/                       # Unauthenticated user gets redirected to /sign-in
   │   └── index.tsx                          # This is the landing page
+  │   │   └── sign-in/                       # Unauthenticated user gets redirected to /sign-in
   ├── assets/
   │   ├── fonts/                             # Custom fonts go here
   │   │   └── SF_Pro_Rounded/                # Custom Font example
@@ -378,21 +415,16 @@ react-native-privy-embedded-wallet-template/
   │       ├── partial-react-logo.png
   │       └── splash-icon.png
   ├── components/
-  │   ├── sheets/                            # All the bottom sheets are here
   │   └── ui/
-  ├── config/
-  │   ├── privyConfig.ts                     # Privy related config
-  │   ├── providers.tsx 
-  │   └── wagmiConfig.ts                     # Monad Testnet related config
   ├── constants/
+  │   ├── abi.json                           # NFT Smart Contract ABI
   ├── context/
   │   ├── AuthContext.tsx
-  │   └── WalletContext.tsx                  # Wallet actions implementations are here
   ├── hooks/
+  │   ├── useSmartWallet.tsx                 # Hook with Smart Wallet related functions
   ├── screens/
   │   ├── Email/                             # Screen that asks for Email
-  │   ├── Home/                              # Wallet Home screen (Authenticated users only)
-  │   ├── Landing/                           # Screen with info on how to use the template
+  │   ├── Home/                              # NFT Minting Screen (Authenticated users only)
   │   └── OTP/                               # Screen that asks for the OTP code sent to email
   ├── types/
   ├── utils.ts
@@ -416,12 +448,12 @@ To learn more about developing your project with Expo, Privy, and Monad look at 
 - [Expo guides](https://docs.expo.dev/guides)
 - [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/)
 - [Creating embedded wallet on the client side](https://docs.privy.io/wallets/wallets/create/from-my-client)
-- [Sending transactions using embedded wallet](https://docs.privy.io/wallets/using-wallets/ethereum/send-a-transaction)
-- [Signing transactions using embedded wallet](https://docs.privy.io/wallets/using-wallets/ethereum/sign-a-transaction)
+- [Smart Account Client using Permissionless](https://docs.pimlico.io/references/permissionless/reference/clients/smartAccountClient)
+- [Using Permissionless to send transactions](https://docs.pimlico.io/references/permissionless/reference/smart-account-actions/sendTransaction)
 - [Tooling and infra options on Monad](https://docs.monad.xyz/tooling-and-infra/)
 
 ## Join the community
 
 - [Discord community](https://discord.com/invite/monaddev): Chat with fellow Monad developers and ask questions.
 
-Facing issues? report [here](https://github.com/monad-developers/react-native-privy-embedded-wallet-template/issues).
+Facing issues? report [here](https://github.com/monad-developers/react-native-privy-pimlico-gas-sponsorship-template/issues).
