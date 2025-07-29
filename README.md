@@ -421,7 +421,7 @@ react-native-privy-pimlico-gas-sponsorship-template/
   ├── app/
   │   ├── _layout.tsx                        # Root layout of the project
   │   └── index.tsx                          # This is the landing page
-  │   │   └── sign-in/                       # Unauthenticated user gets redirected to /sign-in
+  │   └── sign-in/                           # Unauthenticated user gets redirected to /sign-in
   ├── assets/
   │   ├── fonts/                             # Custom fonts go here
   │   │   └── SF_Pro_Rounded/                # Custom Font example
