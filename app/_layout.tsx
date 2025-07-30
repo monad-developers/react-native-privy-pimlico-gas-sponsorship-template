@@ -22,7 +22,7 @@ export default function DemoLayout() {
           </Text>
           <Text style={styles.errorDetail}>
             EXPO_PUBLIC_PIMLICO_BUNDLER_URL:{" "}
-            {hasClientId ? "✅ Set" : "❌ Missing"}
+            {hasBundlerUrl ? "✅ Set" : "❌ Missing"}
           </Text>
           <Text style={styles.note}>Please check your .env file</Text>
         </View>
