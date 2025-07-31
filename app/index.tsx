@@ -1,10 +1,10 @@
 import SmartWalletProvider from "@/hooks/useSmartWallet";
-import HomeScreen from "@/screen/HomeScreen";
+import Home from "@/screens/Home";
 
 export default function Index() {
   return (
     <SmartWalletProvider>
-        <HomeScreen />
+        <Home />
     </SmartWalletProvider>
   );
 }
