@@ -183,8 +183,8 @@ react-native-privy-pimlico-gas-sponsorship-template/
   │   └── Colors.ts
   ├── hooks/
   │   └── useSmartWallet.tsx                 # Smart Wallet utilities
-  ├── screen/
-  │   └── HomeScreen.tsx                     # Start here
+  ├── screens/
+  │   └── Home.tsx                     # Start here
   ├── types/
   │   └── react-native-qrcode-styled.d.ts
   ├── app.json                               # App properties
@@ -380,7 +380,7 @@ This is a build-time configuration, it has no effect in Expo Go.
 
 ## Editing the landing screen
 
-You can edit the landing page by editing the code in the file `screens/HomeScreen.tsx`.
+You can edit the landing page by editing the code in the file `screens/Home.tsx`.
 
 ## Modifying the package/bundle identifier
 
