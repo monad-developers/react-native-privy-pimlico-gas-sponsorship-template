@@ -464,13 +464,10 @@ react-native-privy-pimlico-gas-sponsorship-template/
 
 To learn more about developing your project with Expo, Privy, and Monad look at the following resources:
 
-- [Expo documentation](https://docs.expo.dev/)
-- [Expo guides](https://docs.expo.dev/guides)
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/)
-- [Creating embedded wallet on the client side](https://docs.privy.io/wallets/wallets/create/from-my-client)
-- [Smart Account Client using Permissionless](https://docs.pimlico.io/references/permissionless/reference/clients/smartAccountClient)
-- [Using Permissionless to send transactions](https://docs.pimlico.io/references/permissionless/reference/smart-account-actions/sendTransaction)
-- [Tooling and infra options on Monad](https://docs.monad.xyz/tooling-and-infra/)
+- Expo: [documentation](https://docs.expo.dev/) | [guides](https://docs.expo.dev/guides) | [learn](https://docs.expo.dev/tutorial/introduction/)
+- Privy: [creating an embedded wallet](https://docs.privy.io/wallets/wallets/create/from-my-client)
+- Permissionless: [smart wallet client](https://docs.pimlico.io/references/permissionless/reference/clients/smartAccountClient) | [sending sponsored transactions](https://docs.pimlico.io/references/permissionless/reference/smart-account-actions/sendTransaction)
+- Monad: [docs](https://docs.monad.xyz) | [tooling and infra](https://docs.monad.xyz/tooling-and-infra/)
 
 ## Join the community
 
