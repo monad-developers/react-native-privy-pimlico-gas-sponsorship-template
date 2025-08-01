@@ -1,15 +1,10 @@
-import { Text, View } from "react-native";
+import SmartWalletProvider from "@/hooks/useSmartWallet";
+import Home from "@/screens/Home";
 
 export default function Index() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-    </View>
+    <SmartWalletProvider>
+        <Home />
+    </SmartWalletProvider>
   );
 }

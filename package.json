@@ -4,7 +4,6 @@
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
-    "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
@@ -15,10 +14,9 @@
     "@expo-google-fonts/inter": "^0.4.1",
     "@expo/vector-icons": "^14.1.0",
     "@gorhom/bottom-sheet": "^5.1.6",
-    "@privy-io/expo": "^0.53.8",
+    "@privy-io/expo": "^0.57.0",
     "@privy-io/expo-native-extensions": "^0.0.5",
-    "@privy-io/react-auth": "^2.14.0",
-    "@privy-io/wagmi": "^1.0.3",
+    "@privy-io/wagmi": "^1.0.5",
     "@react-native-async-storage/async-storage": "2.1.2",
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/elements": "^2.3.8",
@@ -44,6 +42,7 @@
     "expo-system-ui": "~5.0.8",
     "expo-web-browser": "~14.1.6",
     "fast-text-encoding": "^1.0.6",
+    "permissionless": "^0.2.52",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.3",
@@ -58,7 +57,8 @@
     "react-native-svg": "15.11.2",
     "react-native-web": "~0.20.0",
     "react-native-webview": "13.13.5",
-    "wagmi": "^2.15.6"
+    "viem": "^2.33.1",
+    "wagmi": "^2.16.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

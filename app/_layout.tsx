@@ -1,36 +1,50 @@
 import { PrivyProvider } from "@privy-io/expo";
 import { Slot } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { monadTestnet } from "viem/chains";
 
 export default function DemoLayout() {
-  if (
-    process.env.EXPO_PUBLIC_PRIVY_APP_ID &&
-    process.env.EXPO_PUBLIC_PRIVY_CLIENT_ID
-  ) {
+  const hasAppId = !!process.env.EXPO_PUBLIC_PRIVY_APP_ID;
+  const hasClientId = !!process.env.EXPO_PUBLIC_PRIVY_CLIENT_ID;
+  const hasBundlerUrl = !!process.env.EXPO_PUBLIC_PIMLICO_BUNDLER_URL;
+  const hasEnvVars = hasAppId && hasClientId && hasBundlerUrl;
+
+  if (!hasEnvVars) {
     return (
-      <PrivyProvider
-        clientId={process.env.EXPO_PUBLIC_PRIVY_CLIENT_ID as string}
-        appId={process.env.EXPO_PUBLIC_PRIVY_APP_ID as string}
-        supportedChains={[monadTestnet]}
-        config={{
-          embedded: {
-            ethereum: {
-              createOnLogin: "users-without-wallets",
-            },
-          },
-        }}
-      >
-        <Slot />
-      </PrivyProvider>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          <Text style={styles.errorText}>⚠️ Configuration Issue</Text>
+          <Text style={styles.errorDetail}>
+            EXPO_PUBLIC_PRIVY_APP_ID: {hasAppId ? "✅ Set" : "❌ Missing"}
+          </Text>
+          <Text style={styles.errorDetail}>
+            EXPO_PUBLIC_PRIVY_CLIENT_ID: {hasClientId ? "✅ Set" : "❌ Missing"}
+          </Text>
+          <Text style={styles.errorDetail}>
+            EXPO_PUBLIC_PIMLICO_BUNDLER_URL:{" "}
+            {hasBundlerUrl ? "✅ Set" : "❌ Missing"}
+          </Text>
+          <Text style={styles.note}>Please check your .env file</Text>
+        </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <Text>EXPO_PUBLIC_PRIVY_APP_ID is not set in .env file</Text>
-      <Text>EXPO_PUBLIC_PRIVY_CLIENT_ID is not set in .env file</Text>
-    </View>
+    <PrivyProvider
+      clientId={process.env.EXPO_PUBLIC_PRIVY_CLIENT_ID as string}
+      appId={process.env.EXPO_PUBLIC_PRIVY_APP_ID as string}
+      supportedChains={[monadTestnet]}
+      config={{
+        embedded: {
+          ethereum: {
+            createOnLogin: "users-without-wallets",
+          },
+        },
+      }}
+    >
+      <Slot />
+    </PrivyProvider>
   );
 }
 
@@ -40,5 +54,29 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 10,
+  },
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  errorText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#e74c3c",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  errorDetail: {
+    fontSize: 14,
+    color: "#666",
+    marginBottom: 5,
+    textAlign: "center",
+  },
+  note: {
+    fontSize: 12,
+    color: "#888",
+    marginTop: 10,
+    textAlign: "center",
+    fontStyle: "italic",
   },
 });
